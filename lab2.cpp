@@ -29,11 +29,16 @@ int main() {
 	insertUser(head, "John Moralez", "Jkmlo382", {"view", "edit", "create"});
 	insertUser(head, "Kaylee Pott", "pottheFlower2323^", {"view"});
 
-	cout << "\nAuthorization requested: Gemma Ross, delete " << authorize(head, "Gemma Ross", "delete") << endl;
-	cout << "\nAuthorization requested: John Moralez, edit " << authorize(head, "John Moralez", "edit") << endl;
-	cout << "\nAuthorization requested: John Moralez, delete " << authorize(head, "John Moralez", "delete") << endl;
-	cout << "\nAuthorization requested: Kaylee Pott, grant " << authorize(head, "Kaylee Pott", "create") << endl;
-	cout << "\nAuthorization requested: Kaylee Pott, grant " << authorize(head, "Kaylee Pott", "edit") << endl;
+	cout << "\nAuthorization requested: Gemma Ross, delete -> "
+	     << (authorize(head, "Gemma Ross", "delete")? "Access Granted." : "Access Denied.") << endl;
+	cout << "\nAuthorization requested: John Moralez, edit -> "
+	     << (authorize(head, "John Moralez", "edit")? "Access Granted." : "Access Denied.") << endl;
+	cout << "\nAuthorization requested: John Moralez, delete -> "
+	     << (authorize(head, "John Moralez", "delete")? "Access Granted." : "Access Denied.") << endl;
+	cout << "\nAuthorization requested: Kaylee Pott, grant -> "
+	     << (authorize(head, "Kaylee Pott", "create")? "Access Granted." : "Access Denied.") << endl;
+	cout << "\nAuthorization requested: Kaylee Pott, grant -> "
+	     << (authorize(head, "Kaylee Pott", "edit")? "Access Granted." : "Access Denied.") << endl;
 
 	return  0;
 }
