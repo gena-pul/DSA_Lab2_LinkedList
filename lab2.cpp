@@ -1,22 +1,23 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 
 struct User{
    string username;
    string password;
-   string role;
+   vector<string> permissions;
    User* next;
 
-   User(const string& u, const string& p, const string& r = "viewer"){
+   User(const string& u, const string& p, const vector<string>& pm = {"view"}){
 	username = u;
 	password = p;
-	role = r;
+	permissions = pm;
 	next = nullptr;
 
   }
 };
 
-bool insertUser(User*& head, const string& username, const string& password, const string& role = "viewer");
+bool insertUser(User*& head, const string& username, const string& password, const vector< string>& permissions = {"view"});
 User* findUser(User* head, const string& username);
 bool authorize(User* head, const string& username, const string& action);
 
@@ -24,9 +25,9 @@ int main() {
 
 	User* head = nullptr;
 
-	insertUser(head, "Gemma Ross", "gross0987!","admin");
-	insertUser(head, "John Moralez", "Jkmlo382", "editor");
-	insertUser(head, "Kaylee Pott", "pottheFlower2323^","grant");
+	insertUser(head, "Gemma Ross", "gross0987!",{"view", "edit", "create", "delete"});
+	insertUser(head, "John Moralez", "Jkmlo382", {"view", "edit", "create"});
+	insertUser(head, "Kaylee Pott", "pottheFlower2323^", {"view"});
 
 	cout << "\nAuthorization requested: Gemma Ross, delete " << authorize(head, "Gemma Ross", "delete") << endl;
 	cout << "\nAuthorization requested: John Moralez, edit " << authorize(head, "John Moralez", "edit") << endl;
@@ -37,9 +38,9 @@ int main() {
 	return  0;
 }
 
-bool insertUser(User*& head, const string& username, const string& password, const string& role){
+bool insertUser(User*& head, const string& username, const string& password, const vector<string>& permissions){
 	if(!head){
-	head = new User(username, password, role);
+	head = new User(username, password, permissions);
 	return true;
 	}
 
@@ -54,7 +55,7 @@ bool insertUser(User*& head, const string& username, const string& password, con
 	if(current->username == username){
 	   return false;
 	}
-	current->next = new User(username, password, role);
+	current->next = new User(username, password, permissions);
 	return true;
 }
 User* findUser(User* head, const string& username){
@@ -73,15 +74,11 @@ bool authorize(User* head, const string& username, const string& action){
 	 return false;
 	}
 
-	if(u->role== "admin"){
+	for(const string& perm : u->permissions){
+	 if(perm == action){
 	   return true;
+          }
 	}
-	if(u->role== "editor"){
-           return action == "view"|| action == "create" || action == "edit";
-        }
-	if(u->role== "viewer"){
-           return action == "view";
-        }
 
 	return false;
 }
